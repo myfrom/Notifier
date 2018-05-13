@@ -1,0 +1,19 @@
+language: node_js
+node_js: stable
+
+install:
+  - npm install bower
+  - bower install
+
+script:
+  - npm run test
+
+after_success:
+  - npm run build-docs
+
+deploy:
+  provider: pages
+  github-token: $GITHUB_TOKEN
+  local-dir: docs
+  on:
+    tags: true

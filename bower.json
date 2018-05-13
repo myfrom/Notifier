@@ -1,0 +1,37 @@
+{
+  "name": "notifier",
+  "authors": [
+    "Wiktor Olejniczak <myfrom.13th@gmail.com>"
+  ],
+  "description": "Easily show paper-dialog and paper-toast alerts",
+  "main": "notifier.js",
+  "keywords": [
+    "dialog",
+    "toast",
+    "alert",
+    "confirm",
+    "polymer",
+    "webcomponents",
+    "paper"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "banner.png"
+  ],
+  "dependencies": {
+    "paper-dialog": "^2.1.1",
+    "neon-animation": "^2.2.1",
+    "polymer": "^2",
+    "paper-button": "^2.1.0",
+    "paper-toast": "^2.1.0",
+    "paper-dialog-scrollable": "^2.2.0",
+    "web-animations-js": "^2.3.1"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "^2.1.0"
+  },
+  "homepage": "https://github.com/myfrom/Notifier"
+}

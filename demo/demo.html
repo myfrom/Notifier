@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Notifier documentation | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel=icon href="favicon.ico">
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <link rel="import" href="bower_components/polymer/lib/utils/import-href.html">
+    <link rel="stylesheet" href="docs-styles.css">
+    <script>
+      window.NotifierOptions = { stylesLoaded: true }
+    </script>
+    <script src="notifier.js"></script>
+
+    <style>
+      #formatted-dialog .first {
+        margin-right: auto;
+      }
+    </style>
+
+</head>
+
+<body>
+
+<nav>
+  <h2><a href="index.html">Home</a></h2>
+  <h3>Classes</h3>
+  <ul><li><a href="Notifier.html">Notifier</a></li></ul>
+  <h3><a href="demo.html">Demo</a></h3>
+</nav>
+
+<div id="main">
+  
+  <h1 class="page-title">Demo</h1>
+
+  <section>
+    <p>Here's the simplest functionality. Click on those buttons to see Notifier in action:</p>
+    <button id="btn-basic-toast">Show toast</button>
+    <button id="btn-basic-dialog">Show dialog</button>
+    <br>
+    <pre class="prettyprint source lang-js"><code>
+btnBasicToast.addEventListener('click', () =>
+                                                                // Target is the clicked button in the toast
+  Notifier.showToast('Hey!', { btnText: 'Hello', btnFunction: e => e.target.parentElement.close() })
+);
+
+btnBasicDialog.addEventListener('click', () =>
+  Notifier.showDialog('Hello world!', 'Look at this beautiful demo')
+);
+    </code></pre>
+  </section>
+
+  <section>
+    <p>Here you can witness a pre-formatted dialog:</p>
+    <button id="btn-formatted-dialog">Let's get advanced</button>
+    <br>
+    <pre class="prettyprint source lang-js"><code>
+btnFormattedDialog.addEventListener('click', () =>
+  Notifier.showDialog('I\'m so well formatted', `
+    &lt;paper-dialog-scrollable&gt;
+      Such a nice content here.
+      &lt;hr noshadow&gt;
+      And there's even our banner!
+      &lt;img src="banner.png"&gt;
+    &lt;/paper-dialog-scrollable&gt;
+    &lt;div class="buttons"&gt;
+      &lt;paper-button class="first"&gt;First, lol&lt;/paper-button&gt;
+      &lt;paper-button dialog-dismiss&gt;Meh&lt;/paper-button&gt;
+      &lt;paper-button autofocus dialog-confirm&gt;I'm amazed&lt;/paper-button&gt;
+    &lt;/div&gt;
+  `, {
+    attributes: {
+      id: 'formatted-dialog'
+    },
+    formatted: true
+  })
+);
+    </code></pre>
+    <pre class="prettyprint source lang-css"><code>
+#formatted-dialog .first {
+  margin-right: auto;
+}
+    </code></pre>
+  </section>
+
+  <section>
+    <p>And at the end you can see shortcut method for question dialog:</p>
+    <button id="btn-question-dialog">Show me</button>
+    <br>
+    <pre class="prettyprint source lang-js"><code>
+btnQuestionDialog.addEventListener('click', () =>
+  Notifier.askDialog('Do you like me?')
+);
+    </code></pre>
+  </section>
+
+</div>
+
+<script>
+  if (!window.Notifier)
+    window.addEventListener('notifer-ready', setup, { once: true });
+  else
+    setup();
+  
+  function setup() {
+    const btnBasicToast = document.querySelector('#btn-basic-toast'),
+          btnBasicDialog = document.querySelector('#btn-basic-dialog'),
+          btnFormattedDialog = document.querySelector('#btn-formatted-dialog'),
+          btnQuestionDialog = document.querySelector('#btn-question-dialog');
+    
+    btnBasicToast.addEventListener('click', () =>
+      Notifier.showToast('Hey!', { btnText: 'Hello', btnFunction: e => e.target.parentElement.close() })
+    );
+    
+    btnBasicDialog.addEventListener('click', () =>
+      Notifier.showDialog('Hello world!', 'Look at this beautiful demo')
+    );
+
+
+    btnFormattedDialog.addEventListener('click', () =>
+      Notifier.showDialog('I\'m so well formatted', `
+        <paper-dialog-scrollable>
+          Such a nice content here.
+          <hr noshadow>
+          And there's even our banner!
+          <img src="banner.png">
+        </paper-dialog-scrollable>
+        <div class="buttons">
+          <paper-button class="first">First, lol</paper-button>
+          <paper-button dialog-dismiss>Meh</paper-button>
+          <paper-button autofocus dialog-confirm>I'm amazed</paper-button>
+        </div>
+      `, {
+        attributes: {
+          id: 'formatted-dialog'
+        },
+        formatted: true
+      })
+    );
+
+    btnQuestionDialog.addEventListener('click', () =>
+      Notifier.askDialog('Do you like me?')
+    );
+  }
+</script>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+
+<link href="https://fonts.googleapis.com/css?family=Roboto:400i,700,700i" rel="stylesheet">
+</body>
+</html>
