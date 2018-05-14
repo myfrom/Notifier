@@ -14,6 +14,7 @@ after_success:
 deploy:
   provider: pages
   github-token: $GITHUB_TOKEN
+  skip-cleanup: true
   local-dir: docs
   on:
     tags: true
