@@ -1,4 +1,7 @@
 [![Travis](https://img.shields.io/travis/myfrom/Notifier.svg?style=flat-square)](https://travis-ci.org/myfrom/Notifier)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg?style=flat-square)](https://www.webcomponents.org/element/myfrom/Notifer)
+[![Docs on Github Pages](https://img.shields.io/badge/docs-github%20pages-3F51B5.svg?style=flat-square)](https://myfrom.github.io/Notifier)
+
 
 # Notifier
 A lightweight library to show paper-toast and paper-dialog alerts easily.
