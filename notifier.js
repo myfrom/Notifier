@@ -36,7 +36,7 @@
     loadingImports.push(new Promise((resolve, reject) => {
       const el = document.createElement('link');
       el.setAttribute('rel', 'stylesheet');
-      el.setAttribute('href', baseUrl + 'notifier/styles.css');
+      el.setAttribute('href', baseUrl + 'Notifier/styles.css');
       el.onload = resolve;
       el.onerror = reject;
       document.head.appendChild(el);

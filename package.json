@@ -1,5 +1,5 @@
 {
-  "name": "notifier",
+  "name": "Notifier",
   "version": "1.0.0",
   "description": "A lightweight library to show paper-toast and paper-dialog alerts easily.",
   "main": "notifier.js",
