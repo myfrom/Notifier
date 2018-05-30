@@ -114,7 +114,7 @@
         const btnWidth = toast.querySelector('paper-button').getBoundingClientRect().width;
         toast.style.paddingRight = btnWidth + 48 + 'px';
       }
-      if (readyToShow)
+      if (readyToShow === true)
         toast.open();
       else
         readyToShow.then(() => toast.open());
@@ -195,9 +195,16 @@
         if (dialog.opened) dialog.close();
         const target = options.target || document.body;
         if (dialog.parentElement !== target) target.appendChild(dialog);
-        dialog.innerHTML =
+        const innerHTML =
           (header ? `<h2>${header}</h2>` : '') +
           (options.formatted ? content : `<paper-dialog-scrollable>${content}</paper-dialog-scrollable>`);
+        if (ShadyDOM.inUse) {
+          const template = document.createElement('template');
+          template.innerHTML = innerHTML;
+          dialog.innerHTML = '';
+          dialog.appendChild(document.importNode(template.content, true));
+        } else
+          dialog.innerHTML = innerHTML;
         for (let i = 0; i < dialog.attributes.length; i++) {
           const attrName = dialog.attributes[i].name;
           if (attrName === 'animation-config' && dialog.animationConfig === this.MATERIAL_DIALOG_ANIMATION)
@@ -222,7 +229,7 @@
           else
             reject({ error: false });
         }, { once: true });
-        if (readyToShow)
+        if (readyToShow === true)
           dialog.open();
         else
           readyToShow.then(() => dialog.open());
