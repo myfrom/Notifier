@@ -198,7 +198,7 @@
         const innerHTML =
           (header ? `<h2>${header}</h2>` : '') +
           (options.formatted ? content : `<paper-dialog-scrollable>${content}</paper-dialog-scrollable>`);
-        if (ShadyDOM.inUse) {
+        if ('ShadyDOM' in window && ShadyDOM.inUse) {
           const template = document.createElement('template');
           template.innerHTML = innerHTML;
           dialog.innerHTML = '';
