@@ -1,59 +1,51 @@
 /**
  * @author Wiktor Olejniczak <myfrom.13th@gmail.com>
  * @license MIT
+ * 
+ * @module notifier
  */
 
 
-  if (!document) throw new Error('Notifier can\'t run without document object.');
+if (!document) throw new Error('Notifier can\'t run without document object.');
 
-  'use strict'
+// Read global options to local const
+const options = window.NotifierOptions || {};
 
-  function importHref(src) {
-    return new Promise((resolve, reject) => {
-      Polymer.importHref(src, resolve, reject);
-    });
-  }
+/** 
+ * Elements that are required for full Notifier functionality
+ * 
+ * @constant
+ */
+const elementsToImport = [
+  '@polymer/paper-dialog/paper-dialog.js', '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js',
+  '@polymer/paper-button/paper-button.js', '@polymer/paper-toast/paper-toast.js',
+  'web-animations-js/web-animations.min.js', '@polymer/neon-animation/animations/fade-in-animation.js',
+  '@polymer/neon-animation/animations/fade-out-animation.js', '@polymer/neon-animation/animations/slide-from-bottom-animation.js',
+  '@polymer/neon-animation/animations/slide-down-animation.js'
+]
 
-  const options = window.NotifierOptions || {};
-  const baseUrl = options.baseComponentsURL || 'bower_components/';
-  if (baseUrl.substr(baseUrl.length - 1) !== '/') baseUrl += '/';
+const loadingImports = [];
+if (!options.elementsImported) {
+  elementsToImport.forEach(url => {
+    loadingImports.push(import(`../${url}`));
+  });
+}
+if (!options.stylesLoaded)
+  loadingImports.push(import('./styles-loader.js'));
 
-  const loadingImports = [];
+const mobileMediaQuery = options.mobileMediaQuery ||
+  ['(orientation: landscape) and (max-width: 960px)',
+  '(orientation: portrait) and (max-width: 600px)'];
 
-  if (!options.elementsImported) {
-    [
-      'paper-dialog/paper-dialog.html', 'paper-dialog-scrollable/paper-dialog-scrollable.html',
-      'paper-button/paper-button.html', 'paper-toast/paper-toast.html',
-      'neon-animation/web-animations.html', 'neon-animation/animations/fade-in-animation.html',
-      'neon-animation/animations/fade-out-animation.html', 'neon-animation/animations/slide-from-bottom-animation.html',
-      'neon-animation/animations/slide-down-animation.html'
-    ].forEach(url => {
-      loadingImports.push(importHref(baseUrl + url));
-    });
-  }
-  if (!options.stylesLoaded) {
-    loadingImports.push(new Promise((resolve, reject) => {
-      const el = document.createElement('link');
-      el.setAttribute('rel', 'stylesheet');
-      el.setAttribute('href', baseUrl + 'Notifier/styles.css');
-      el.onload = resolve;
-      el.onerror = reject;
-      document.head.appendChild(el);
-    }));
-  }
+/**
+ * Main class. It contains all functions and manages paper-dialog and paper-toast elements currently on the page.
+ * You don't have to worry about multiple instances
+ * 
+ * @class
+ * @demo demo/demo.html
+ */
+class Notifier {
 
-  const mobileMediaQuery = options.mobileMediaQuery ||
-    ['(orientation: landscape) and (max-width: 960px)',
-    '(orientation: portrait) and (max-width: 600px)'];
-
-  /**
-   * Main class. It contains all functions and manages paper-dialog and paper-toast elements currently on the page.
-   * It's recommended to have only one on page.
-   * @class
-   * @demo demo/demo.html
-   */
-  class Notifier {
-    
   /**
    * Get toast element or create one if needed
    * 
@@ -101,16 +93,59 @@
   /**
    * @throws This will throw if run in non-browser environment
    */
-    constructor() {
-      // Check for window object
-      if (String(typeof window).toLowerCase() === 'undefined')
-        throw new Error('Notifier can\'t be run in non-browser environment');
-        
-      window.addEventListener('resize', e => {
-        this._mobile = window.matchMedia(mobileMediaQuery).matches;
-      });
+  constructor() {
+    // Check for window object
+    if (typeof window === 'undefined')
+      throw new Error('Notifier can\'t be run in non-browser environment');
+      
+    // Add shortcut for layout
+    window.addEventListener('resize', e => {
       this._mobile = window.matchMedia(mobileMediaQuery).matches;
+    });
+    this._mobile = window.matchMedia(mobileMediaQuery).matches;
+
+    // Define Material animation for dialogs
+    // This is a part related to neon-animation and will be removed in future
+    /** @constant */
+    this.MATERIAL_DIALOG_ANIMATION = {
+      'entry': [
+        {
+          'name': 'slide-from-bottom-animation',
+          'node': this.dialog,
+          'timing': {
+            'duration': 160,
+            'easing': 'ease-out'
+          }
+        },
+        {
+          'name': 'fade-in-animation',
+          'node': this.dialog,
+          'timing': {
+            'duration': 160,
+            'easing': 'ease-out'
+          }
+        }
+      ],
+      'exit': [
+        {
+          'name': 'slide-down-animation',
+          'node': this.dialog,
+          'timing': {
+            'duration': 160,
+            'easing': 'ease-in'
+          }
+        },
+        {
+          'name': 'fade-out-animation',
+          'node': this.dialog,
+          'timing': {
+            'duration': 160,
+            'easing': 'ease-in'
+          }
+        }
+      ]
     }
+  }
   
   /**
    * Opens a toast with provided message
@@ -122,49 +157,45 @@
    * @param {object} [options.attributes] Attributes to be passed down to the dialog, { attr: value }
    * @throws This will throw if `msg` is empty
    */
-    showToast(msg, options = {}) {
-      if (!msg) throw new Error('Provided empty toast message');
-      let readyToShow = true;
-      if (!this.toast) {
-        /** 
-         * @todo Enable on-demand components loading
-         * @todo Make it independent of importHref function
-         */
-        if (!customElements.get('paper-toast')) {
-          readyToShow = importHref('../bower_components/paper-toast/paper-toast.html')
-            .then(() => readyToShow = true);
-        }
-        this.toast = document.createElement('paper-toast');
-        document.body.appendChild(this.toast);
-      }
-      if (!options.attributes) options.attributes = [];
-      const toast = this.toast;
-      if (toast.opened) toast.close();
-      toast.innerHTML = options.btnText ? `<paper-button>${options.btnText}</paper-button>` : null;
-      for (let i = 0; i < toast.attributes.length; i++) {
-        const attrName = toast.attributes[i].name;
-        if (options.attributes[attrName])
-          toast.setAttribute(attrName, options.attributes[attrName]);
-        else
-          toast.removeAttribute(attrName);
-      }
-      Object.keys(options.attributes).forEach(attrName => {
+  async showToast(msg, options = {}) {
+    await Promise.all(loadingImports);
+
+    if (!msg) throw new Error('Provided empty toast message');
+
+    if (!options.attributes) options.attributes = [];
+
+    const toast = this._toast;
+    if (toast.opened) toast.close();
+
+    toast.innerHTML = options.btnText ? `<paper-button>${options.btnText}</paper-button>` : null;
+
+    for (let i = 0; i < toast.attributes.length; i++) {
+      const attrName = toast.attributes[i].name;
+      if (options.attributes[attrName])
         toast.setAttribute(attrName, options.attributes[attrName]);
-      });
-      toast.classList.toggle('fit-bottom', this._mobile);
-      toast.text = msg;
-      toast.duration = String(typeof options.duration).toLowerCase() === 'number' ? options.duration : 3000;
-      if (options.btnText && options.btnFunction) {
-        toast.querySelector('paper-button').addEventListener('tap', options.btnFunction);
-      }
-      if (options.btnText) {
-        const btnWidth = toast.querySelector('paper-button').getBoundingClientRect().width;
-        toast.style.paddingRight = btnWidth + 48 + 'px';
-      }
-      if (readyToShow === true)
-        toast.open();
       else
-        readyToShow.then(() => toast.open());
+        toast.removeAttribute(attrName);
+    }
+    Object.keys(options.attributes).forEach(attrName => {
+      toast.setAttribute(attrName, options.attributes[attrName]);
+    });
+
+    toast.classList.toggle('fit-bottom', this._mobile);
+
+    toast.text = msg;
+
+    toast.duration = String(typeof options.duration).toLowerCase() === 'number' ? options.duration : 3000;
+
+    if (options.btnText && options.btnFunction) {
+      toast.querySelector('paper-button').addEventListener('tap', options.btnFunction);
+    }
+
+    if (options.btnText) {
+      const btnWidth = toast.querySelector('paper-button').getBoundingClientRect().width;
+      toast.style.paddingRight = btnWidth + 48 + 'px';
+    }
+
+    toast.open();
   }
   
   /**
@@ -182,66 +213,15 @@
    */
   showDialog(header, content, options = {}) {
     return new Promise((resolve, reject) => {
-        let readyToShow = true;
-        if (!this.dialog) {
-          /** 
-           * @todo Enable on-demand components loading
-           * @todo Make it independent of importHref function
-           */
-          if (!customElements.get('paper-dialog')) {
-            readyToShow = importHref('../bower_components/paper-dialog/paper-dialog.html').then(() => readyToShow = true);;
-          }
-          this.dialog = document.createElement('paper-dialog');
-          document.body.appendChild(this.dialog);
-          if (!this.MATERIAL_DIALOG_ANIMATION) {
-            /**
-             * @constant
-             */
-            this.MATERIAL_DIALOG_ANIMATION = {
-              'entry': [
-                {
-                  'name': 'slide-from-bottom-animation',
-                  'node': this.dialog,
-                  'timing': {
-                    'duration': 160,
-                    'easing': 'ease-out'
-                  }
-                },
-                {
-                  'name': 'fade-in-animation',
-                  'node': this.dialog,
-                  'timing': {
-                    'duration': 160,
-                    'easing': 'ease-out'
-                  }
-                }
-              ],
-              'exit': [
-                {
-                  'name': 'slide-down-animation',
-                  'node': this.dialog,
-                  'timing': {
-                    'duration': 160,
-                    'easing': 'ease-in'
-                  }
-                },
-                {
-                  'name': 'fade-out-animation',
-                  'node': this.dialog,
-                  'timing': {
-                    'duration': 160,
-                    'easing': 'ease-in'
-                  }
-                }
-              ]
-            }
-          }
-        }
+      Promise.all(loadingImports).then(() => {
         if (!options.attributes) options.attributes = [];
-        const dialog = this.dialog;
+
+        const dialog = this._dialog;
         if (dialog.opened) dialog.close();
+
         const target = options.target || document.body;
         if (dialog.parentElement !== target) target.appendChild(dialog);
+
         const innerHTML =
           (header ? `<h2>${header}</h2>` : '') +
           (options.formatted ? content : `<paper-dialog-scrollable>${content}</paper-dialog-scrollable>`);
@@ -252,6 +232,7 @@
           dialog.appendChild(document.importNode(template.content, true));
         } else
           dialog.innerHTML = innerHTML;
+
         for (let i = 0; i < dialog.attributes.length; i++) {
           const attrName = dialog.attributes[i].name;
           if (attrName === 'animation-config' && dialog.animationConfig === this.MATERIAL_DIALOG_ANIMATION)
@@ -264,24 +245,26 @@
         Object.keys(options.attributes).forEach(attrName => {
           dialog.setAttribute(attrName, options.attributes[attrName]);
         });
+
         if (!dialog.animationConfig) {
           dialog.animationConfig = this.MATERIAL_DIALOG_ANIMATION;
         }
+
         if (!dialog.withBackdrop && !options.noBackdrop) {
           dialog.withBackdrop = true;
         }
+
         dialog.addEventListener('iron-overlay-closed', e => {
           if (e.detail.confirmed)
             resolve(options.beforeClose && options.beforeClose(e));
           else
             reject({ error: false });
         }, { once: true });
-        if (readyToShow === true)
-          dialog.open();
-        else
-          readyToShow.then(() => dialog.open());
+
+        dialog.open();
       });
-    }
+    });
+  }
 
   /**
    * Predefined dialog with a yes/no question
@@ -315,7 +298,7 @@
     return this.showDialog(msg, content, options);
   }
   
-  }
-  
+}
+
 export default Notifier;
 export { elementsToImport };
