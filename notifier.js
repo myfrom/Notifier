@@ -54,6 +54,53 @@
    */
   class Notifier {
     
+  /**
+   * Get toast element or create one if needed
+   * 
+   * @returns {Element} Toast element
+   * @throws This will throw if paper-toast element isn't imported
+   */
+  get toast() {
+    if (customElements.get('paper-toast'))
+      throw new Error('You must import paper-toast for Notifier.showToast functionality to work');
+    if (this._toast)
+      return this._toast;
+    else {
+      const toastSearchRes = document.querySelector('paper-toast.notifier');
+      if (toastSearchRes) {
+        this._toast = toastSearchRes
+      } else {
+        const toastEl = document.createElement('paper-toast');
+        document.body.appendChild(this.toast);
+        this._toast = toastEl;
+      }
+    }
+  }
+
+  /**
+   * Get dialog element or create one if needed
+   * 
+   * @returns {Element} Dialog element
+   * @throws This will throw if paper-dialog element isn't imported
+   */
+  get dialog() {
+    if (this._dialog)
+      return this._dialog;
+    else {
+      const toastSearchRes = document.querySelector('paper-dialog.notifier');
+      if (toastSearchRes) {
+        this._dialog = toastSearchRes
+      } else {
+        const toastEl = document.createElement('paper-dialog');
+        document.body.appendChild(this.toast);
+        this._dialog = toastEl;
+      }
+    }
+  }
+
+  /**
+   * @throws This will throw if run in non-browser environment
+   */
     constructor() {
       // Check for window object
       if (String(typeof window).toLowerCase() === 'undefined')
@@ -64,16 +111,17 @@
       });
       this._mobile = window.matchMedia(mobileMediaQuery).matches;
     }
-    
-    /**
-     * Opens a toast with provided message
-     * @param {string} msg Message to be shown
-     * @param {object} [options]
-     * @param {string} options.btnText Text on paper button, leave empty to not show
-     * @param {function} options.btnFunction Function to be called when button is pressed
-     * @param {number} [options.duration = 3000] Time in milliseconds before dialog will close, set to 0 to only allow manual close
-     * @param {object} options.attributes Attributes to be passed down to the dialog, { attr: value }
-     */
+  
+  /**
+   * Opens a toast with provided message
+   * @param {string} msg Message to be shown
+   * @param {object} [options]
+   * @param {string} [options.btnText] Text on paper button, leave empty to not show
+   * @param {EventListener} [options.btnFunction] Function to be called when button is pressed
+   * @param {number} [options.duration = 3000] Time in milliseconds before dialog will close, set to 0 to only allow manual close
+   * @param {object} [options.attributes] Attributes to be passed down to the dialog, { attr: value }
+   * @throws This will throw if `msg` is empty
+   */
     showToast(msg, options = {}) {
       if (!msg) throw new Error('Provided empty toast message');
       let readyToShow = true;
@@ -117,23 +165,23 @@
         toast.open();
       else
         readyToShow.then(() => toast.open());
-    }
-    
-    /**
-     * Opens a dialog
-     * @param {string} header Header of the dialog
-     * @param {string} content Content of the dialog, must be a string with all tags, including bottom buttons
-     * @param {object} [options]
-     * @param {object} options.attributes Attributes to be passed down to the dialog, { attr: value }
-     * @param {boolean} options.noBackdrop Don't show backdrop behind dialog
-     * @param {boolean} [options.formatted=false] If true,`content` will be put directly into element, otherwise put inside `<paper-scrollable-dialog>`
-     * @param {DOMElement} options.target Target element on which dialog will be appended
-     * @param {function} options.beforeClose Function to be run after accepting but before removing the dialog, if set promise will resolve with it's resoluts
-     * @param {object} options.animationConfig animationConfig on dialog element, if unset will default to Material animation
-     * @returns {Promise} A promise that will resolve if dialog was accepted or reject with `error: false` when cancelled
-     */
-    showDialog(header, content, options = {}) {
-      return new Promise((resolve, reject) => {
+  }
+  
+  /**
+   * Opens a dialog
+   * @param {string} header Header of the dialog
+   * @param {string} content Content of the dialog, must be a string with all tags, including bottom buttons
+   * @param {object} [options]
+   * @param {object} [options.attributes] Attributes to be passed down to the dialog, { attr: value }
+   * @param {boolean} [options.noBackdrop] Don't show backdrop behind dialog
+   * @param {boolean} [options.formatted=false] If true,`content` will be put directly into element, otherwise put inside `<paper-scrollable-dialog>`
+   * @param {Element} [options.target=window] Target element on which dialog will be appended
+   * @param {function} [options.beforeClose] Function to be run after accepting but before removing the dialog, if set promise will resolve with it's resoluts
+   * @param {object} [options.animationConfig] animationConfig on dialog element, if unset will default to Material animation
+   * @returns {Promise} A promise that will resolve if dialog was accepted or reject with `error: false` when cancelled
+   */
+  showDialog(header, content, options = {}) {
+    return new Promise((resolve, reject) => {
         let readyToShow = true;
         if (!this.dialog) {
           /** 
@@ -235,38 +283,38 @@
       });
     }
 
-    /**
-     * Predefined dialog with a yes/no question
-     * @param {String} [msg='Are you sure?'] Header text
-     * @param {Object} [options]
-     * @param {String} [options.innerMsg] Massage in dialog body
-     * @param {String} [options.cancelText='No'] Text to show in cancel button
-     * @param {String} [options.acceptText='Yes'] Text to show in accept button
-     * @param {object} options.attributes Attributes to be passed down to the dialog, { attr: value }
-     * @param {boolean} options.noBackdrop Don't show backdrop behind dialog
-     * @param {boolean} [options.formatted=false] If true,`content` will be put directly into element, otherwise put inside `<paper-scrollable-dialog>`
-     * @param {DOMElement} options.target Target element on which dialog will be appended
-     * @param {function} options.beforeClose Function to be run after accepting but before removing the dialog, if set promise will resolve with it's resoluts
-     * @param {object} options.animationConfig animationConfig on dialog element, if unset will default to Material animation
-     * @returns {Promise} A promise that will resolve if dialog was accepted or reject with `error: false` when cancelled
-     */
-    askDialog(msg = 'Are you sure?', options = {}) {
-      const innerMsg = options.innerMsg || '',
-            cancelText = options.cancelText || 'No',
-            acceptText = options.acceptText || 'Yes',
-            content = `
-        <paper-dialog-scrollable>
-          ${innerMsg}
-        </paper-dialog-scrollable>
-        <div class="buttons">
-          <paper-button dialog-dismiss>${cancelText}</paper-button>
-          <paper-button dialog-confirm autofocus>${acceptText}</paper-button>
-        </div>
-      `;
-      options.formatted = true;
-      return this.showDialog(msg, content, options);
-    }
-
+  /**
+   * Predefined dialog with a yes/no question
+   * @param {String} [msg='Are you sure?'] Header text
+   * @param {Object} [options]
+   * @param {String} [options.innerMsg] Massage in dialog body
+   * @param {String} [options.cancelText='No'] Text to show in cancel button
+   * @param {String} [options.acceptText='Yes'] Text to show in accept button
+   * @param {object} [options.attributes] Attributes to be passed down to the dialog, { attr: value }
+   * @param {boolean} [options.noBackdrop] Don't show backdrop behind dialog
+   * @param {boolean} [options.formatted=false] If true,`content` will be put directly into element, otherwise put inside `<paper-scrollable-dialog>`
+   * @param {Element} [options.target=window] Target element on which dialog will be appended
+   * @param {function} [options.beforeClose] Function to be run after accepting but before removing the dialog, if set returned promise will resolve with it's results
+   * @param {object} [options.animationConfig] animationConfig on dialog element, if unset will default to Material animation
+   * @returns {Promise} A promise that will resolve if dialog was accepted or reject with `error: false` when cancelled
+   */
+  askDialog(msg = 'Are you sure?', options = {}) {
+    const innerMsg = options.innerMsg || '',
+          cancelText = options.cancelText || 'No',
+          acceptText = options.acceptText || 'Yes',
+          content = `
+      <paper-dialog-scrollable>
+        ${innerMsg}
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>${cancelText}</paper-button>
+        <paper-button dialog-confirm autofocus>${acceptText}</paper-button>
+      </div>
+    `;
+    options.formatted = true;
+    return this.showDialog(msg, content, options);
+  }
+  
     // cookiesDialog() {
     //   return this.showDialog('Allow cookies and usage reporting?',`
     //     <paper-dialog-scrollable>
