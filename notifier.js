@@ -3,7 +3,6 @@
  * @license MIT
  */
 
-(function(){
 
   if (!document) throw new Error('Notifier can\'t run without document object.');
 
@@ -315,9 +314,5 @@
     
   }
   
-  Promise.all(loadingImports).then(() => {
-    window.Notifier = new Notifier();
-    window.dispatchEvent(new CustomEvent('notifier-ready', { detail: window.Notifier }));
-  });
-
-})();
+export default Notifier;
+export { elementsToImport };
