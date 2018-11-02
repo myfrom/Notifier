@@ -315,51 +315,6 @@
     return this.showDialog(msg, content, options);
   }
   
-    // cookiesDialog() {
-    //   return this.showDialog('Allow cookies and usage reporting?',`
-    //     <paper-dialog-scrollable>
-    //       <p>
-    //         We need cookies and IDB to work offline.
-    //       </p>
-    //       <paper-checkbox checked autofocus>Aslo allow usage reporting</paper-checkbox>
-    //       <p>
-    //         It will help us make the app better and faster.
-    //         The collected data isn't connected with you and is mainly related to how fast the app is and what functions of it do you use.
-    //       </p>
-    //     </paper-dialog-scrollable>
-    //     <div class="buttons">
-    //       <a href="https://docs.google.com/document/d/1v6Xmcs9SQLt3wIObW6Qpp_OiYAvugXx9Ux2gxG5h4Ik">
-    //         <paper-button>learn more</paper-button>
-    //       </a>
-    //       <paper-button dialog-confirm>Alow</paper-button>
-    //     </div>
-    //   `, {
-    //     attributes: {
-    //       'id': 'cookiesDialog',
-    //       'no-cancel-on-esc-key': true,
-    //       'no-cancel-on-outside-click': true
-    //     },
-    //     noBackground: true
-    //   });
-    // }
-    
-    askDialog(msg = 'Are you sure?', options = {}) {
-      const dialog = document.createElement('paper-dialog');
-      const innerMsg = options.innerMsg || '',
-            cancelText = options.cancelText || 'No',
-            acceptText = options.acceptText || 'Yes',
-            content =
-        `<paper-dialog-scrollable>
-          ${innerMsg}
-        </paper-dialog-scrollable>
-        <div class="buttons">
-          <paper-button dialog-dismiss>${cancelText}</paper-button>
-          <paper-button dialog-confirm autofocus>${acceptText}</paper-button>
-        </div>`;
-      options.formatted = true;
-      return this.showDialog(msg, content, options);
-    }
-    
   }
   
 export default Notifier;
