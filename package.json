@@ -1,6 +1,6 @@
 {
-  "name": "Notifier",
-  "version": "1.0.0",
+  "name": "@myfrom/notifier",
+  "version": "2.0.0",
   "description": "A lightweight library to show paper-toast and paper-dialog alerts easily.",
   "main": "notifier.js",
   "directories": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
-    "build-docs": "jsdoc notifier.js -c jsdoc.json && cd docs && bower i"
+    "build-docs": "jsdoc notifier.js -c jsdoc.config.json && cd docs && npm i"
   },
   "repository": {
     "type": "git",
@@ -33,12 +33,12 @@
     "jsdoc": "^3.5.5"
   },
   "dependencies": {
-    "@polymer/neon-animation": "0.0.3",
-    "@polymer/paper-button": "0.0.3",
-    "@polymer/paper-dialog": "0.0.3",
-    "@polymer/paper-dialog-scrollable": "0.0.3",
-    "@polymer/paper-toast": "0.0.3",
-    "@polymer/polymer": "^2.6.0",
+    "@polymer/neon-animation": "3",
+    "@polymer/paper-button": "3",
+    "@polymer/paper-dialog": "3",
+    "@polymer/paper-dialog-scrollable": "3",
+    "@polymer/paper-toast": "3",
+    "@polymer/polymer": "3",
     "web-animations-js": "^2.3.1"
   }
 }
