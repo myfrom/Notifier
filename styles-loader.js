@@ -8,18 +8,17 @@
 
 if (!document) throw new Error('Notifier can\'t run without document object.');
 
-export default (r => {
-  const style = `
-    paper-toast.notifier > paper-button {
-      position: absolute;
-      top: 6px;
-      bottom: 6px;
-      height: 36px;
-      right: 24px;
-      margin: auto 0;
-      min-width: unset;
-    }
-  `
-  document.head.insertAdjacentHTML('beforeend', style);
-  r();
-})();
+const styleContent = `
+  paper-toast.notifier > paper-button {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    height: 36px;
+    right: 24px;
+    margin: auto 0;
+    min-width: unset;
+  }
+`;
+const styleEl = document.createElement('style');
+styleEl.innerHTML = styleContent;
+document.head.appendChild(styleEl);

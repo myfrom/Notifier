@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
-    "build-docs": "jsdoc notifier.js -c jsdoc.config.json && cd docs && npm i"
+    "build-docs": "npm run cleanup && jsdoc notifier.js -c jsdoc.json && ./node_modules/.bin/webpack",
+    "cleanup": "rm -rf ./docs"
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,13 @@
   },
   "homepage": "https://github.com/myfrom/Notifier",
   "devDependencies": {
-    "jsdoc": "^3.5.5"
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "jsdoc": "^3.5.5",
+    "webpack": "^4.24.0",
+    "webpack-cli": "^3.1.2"
   },
   "dependencies": {
     "@polymer/neon-animation": "3",
@@ -39,6 +46,6 @@
     "@polymer/paper-dialog-scrollable": "3",
     "@polymer/paper-toast": "3",
     "@polymer/polymer": "3",
-    "web-animations-js": "^2.3.1"
+    "babel-loader": "^8.0.4"
   }
 }

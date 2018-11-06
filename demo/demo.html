@@ -13,14 +13,10 @@
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     
-    <link rel="stylesheet" href="styles.css">
-    
-    <link rel="import" href="bower_components/polymer/lib/utils/import-href.html">
     <link rel="stylesheet" href="docs-styles.css">
-    <script>
-      window.NotifierOptions = { stylesLoaded: true }
-    </script>
-    <script src="notifier.js"></script>
+
+    <!-- WebAnimations polyfill for paper-dialog -->
+    <script src="https://unpkg.com/web-animations-js/web-animations-next-lite.min.js"></script>
 
     <style>
       #formatted-dialog .first {
@@ -28,14 +24,29 @@
       }
     </style>
 
+    <script>
+
+      window.NotifierOptions = {
+        // They're imported in bundle, it's easier to host demos that way ;)
+        elementsImported: true
+      }
+
+    </script>
+
 </head>
 
 <body>
 
 <nav>
   <h2><a href="index.html">Home</a></h2>
+  <h3>Modules</h3>
+  <ul>
+    <li><a href="module-notifier.html">notifier</a></li>
+  </ul>
   <h3>Classes</h3>
-  <ul><li><a href="Notifier.html">Notifier</a></li></ul>
+  <ul>
+    <li><a href="module-notifier-Notifier.html">Notifier</a></li>
+  </ul>
   <h3><a href="demo.html">Demo</a></h3>
 </nav>
 
@@ -105,6 +116,8 @@ btnQuestionDialog.addEventListener('click', () =>
   </section>
 
 </div>
+
+<script src="bundle.js"></script>
 
 <script>
   if (!window.Notifier)

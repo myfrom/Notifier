@@ -1,5 +1,5 @@
 [![Travis](https://img.shields.io/travis/myfrom/Notifier.svg?style=flat-square)](https://travis-ci.org/myfrom/Notifier)
-[![Published on webcomponents.org](https://img.shields.io/badge/shared_on-webcomponents.org-blue.svg?style=flat-square)](https://www.webcomponents.org/element/myfrom/Notifer)
+[![Published on webcomponents.org](https://img.shields.io/badge/shared_on-webcomponents.org-blue.svg?style=flat-square)](https://www.webcomponents.org/element/@myfrom/Notifer)
 [![Docs on Github Pages](https://img.shields.io/badge/docs-github%20pages-3F51B5.svg?style=flat-square)](https://myfrom.github.io/Notifier)
 
 
@@ -10,14 +10,12 @@ A lightweight library to show paper-toast and paper-dialog alerts easily.
 
 ## Usage
 
-To use it you have to import [notifier.js](notifier.js) file anywhere in your document scope. You also must ensure that Polymer and importHref are loaded before Notifier.
-You should put something like this in your document's `<head>`:
-```html
-<link rel="import" href="bower_components/polymer/lib/utils/import-href.html">
-<script src="bower_components/notifier/notifier.js"></script>
+To use it you have to import [notifier](notifier.js) module.
+```javascript
+import Notifier from '@myfrom/notifier';
 ```
+The module returns an initialised Notifier class on which you can use methods described in [docs](https://myfrom.github.io/Notifier)
 
-When Notifier is ready, it dispatches an event `notifier-ready` on window and initialises its class on `window.Notifier`.
 
 ### Custom options
 
@@ -33,11 +31,11 @@ You can set custom options before you load Notifier by setting `NotifierOptions`
 
 ### Loading dependencies
 
-Notifier relies on a few custom elements such as [paper-dialog](https://www.webcomponents.org/element/PolymerElements/paper-dialog) and [paper-toast](https://www.webcomponents.org/element/PolymerElements/paper-toast).
+Notifier relies on a few custom elements such as [paper-dialog](https://www.webcomponents.org/element/@Polymer/paper-dialog) and [paper-toast](https://www.webcomponents.org/element/@Polymer/paper-toast).
 
-By default, they will be loaded using `Polymer.importHref` function. You can ommit this loading attempt by setting `elementsImported` option to `true` (look above). However, if you do this and not import nescessary files, Notifier will throw an error.
+By default, they will be loaded using a dynamic import. You can ommit this loading attempt by setting `elementsImported` option to `true` (look above). However, if you do this and not import necessary files, Notifier will throw an error.
 
-Here are all the nescessary files for each function:
+Here are all the necessary files for each function:
 
 <details>
   <summary>`showToast()`</summary>
@@ -72,8 +70,10 @@ Here are all the nescessary files for each function:
   </ul>
 </details>
 
+They are also exported as an array from notifier module (`elementsToImport`).
+
 ### Helper styles
 
-Notifer relies on a few styles applied to paper-button in paper-toast. Those styles are not mandatory but enxure there are no weird bugs such as text overlapping with button, etc.
+Notifier relies on a few styles applied to paper-button in paper-toast. Those styles are not mandatory but ensure there are no weird bugs such as text overlapping with button, etc.
 
-They're automatically loaded but you can skip that by setting `stylesLoaded` option to `true` (look above).
+They're automatically loaded but you can skip that by setting `stylesLoaded` option to `true`). In such case you might want to manually add [styles.css](./styles.css) to your document.
