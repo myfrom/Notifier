@@ -14,7 +14,9 @@ To use it you have to import [notifier](notifier.js) module.
 ```javascript
 import Notifier from '@myfrom/notifier';
 ```
-The module returns an initialised Notifier class on which you can use methods described in [docs](https://myfrom.github.io/Notifier)
+The module returns an initialised Notifier class on which you can use methods described in [docs](https://myfrom.github.io/Notifier).
+
+If you want to use non-module version, you should downgrade to version 1.x.x
 
 
 ### Custom options
