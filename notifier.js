@@ -27,7 +27,7 @@ const elementsToImport = [
 const loadingImports = [];
 if (!options.elementsImported) {
   elementsToImport.forEach(url => {
-    loadingImports.push(import(`../${url}`));
+    loadingImports.push(import(url));
   });
 }
 if (!options.stylesLoaded)
@@ -53,18 +53,18 @@ class Notifier {
    * @throws This will throw if paper-toast element isn't imported
    */
   get toast() {
-    if (customElements.get('paper-toast'))
+    if (!customElements.get('paper-toast'))
       throw new Error('You must import paper-toast for Notifier.showToast functionality to work');
     if (this._toast)
       return this._toast;
     else {
       const toastSearchRes = document.querySelector('paper-toast.notifier');
       if (toastSearchRes) {
-        this._toast = toastSearchRes
+        return this._toast = toastSearchRes
       } else {
         const toastEl = document.createElement('paper-toast');
-        document.body.appendChild(this.toast);
-        this._toast = toastEl;
+        document.body.appendChild(toastEl);
+        return this._toast = toastEl;
       }
     }
   }
@@ -76,16 +76,18 @@ class Notifier {
    * @throws This will throw if paper-dialog element isn't imported
    */
   get dialog() {
+    if (!customElements.get('paper-dialog'))
+      throw new Error('You must import paper-dialog for Notifier.showDialog functionality to work');
     if (this._dialog)
       return this._dialog;
     else {
-      const toastSearchRes = document.querySelector('paper-dialog.notifier');
-      if (toastSearchRes) {
-        this._dialog = toastSearchRes
+      const dialogSearchRes = document.querySelector('paper-dialog.notifier');
+      if (dialogSearchRes) {
+        return this._dialog = dialogSearchRes
       } else {
-        const toastEl = document.createElement('paper-dialog');
-        document.body.appendChild(this.toast);
-        this._dialog = toastEl;
+        const dialogEl = document.createElement('paper-dialog');
+        document.body.appendChild(dialogEl);
+        return this._dialog = dialogEl;
       }
     }
   }
@@ -164,7 +166,7 @@ class Notifier {
 
     if (!options.attributes) options.attributes = [];
 
-    const toast = this._toast;
+    const toast = this.toast;
     if (toast.opened) toast.close();
 
     toast.innerHTML = options.btnText ? `<paper-button>${options.btnText}</paper-button>` : null;
@@ -195,6 +197,7 @@ class Notifier {
       toast.style.paddingRight = btnWidth + 48 + 'px';
     }
 
+    toast.classList.add('notifier');
     toast.open();
   }
   
@@ -216,7 +219,7 @@ class Notifier {
       Promise.all(loadingImports).then(() => {
         if (!options.attributes) options.attributes = [];
 
-        const dialog = this._dialog;
+        const dialog = this.dialog;
         if (dialog.opened) dialog.close();
 
         const target = options.target || document.body;
@@ -261,6 +264,7 @@ class Notifier {
             reject({ error: false });
         }, { once: true });
 
+        dialog.classList.add('notifier');
         dialog.open();
       });
     });
@@ -300,5 +304,6 @@ class Notifier {
   
 }
 
-export default Notifier;
+/** Initialised Notifier class */
+export default new Notifier();
 export { elementsToImport };
