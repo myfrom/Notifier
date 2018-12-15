@@ -1,0 +1,396 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400|Roboto+Mono');
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  background-color: #EEEEEE;
+  color: rgba(0,0,0,0.87);
+  font-size: 14px;
+  font-family: 'Roboto', 'Open Sans', 'Halvetica', sans-serif;
+  font-weight: 400;
+}
+
+body {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+nav {
+  float: right;
+  width: 20%;
+  padding: 32px 24px;
+}
+
+#main {
+  background-color: white;
+  float: left;
+  width: 80%;
+  padding: 16px;
+}
+
+@media (orientation: landscape) and (max-width: 960px),
+  (orientation: portrait) and (max-width: 600px) {
+  
+  body {
+    background-color: white;
+    padding: 16px;
+  }
+  
+  nav, #main {
+    float: unset;
+    width: 100%;
+    padding: 0;
+  }
+  
+  nav {
+    padding: 8px;
+    background-color: #eeeeee;
+  }
+  
+  nav > * {
+    margin: 0 !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+  }
+  
+  nav > h3 {
+    padding-top: 8px !important;
+    margin-top: 8px !important;
+  }
+  
+  #main {
+    margin-top: 24px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0,0,0,0.12);
+  }
+  
+}
+
+a, a:visited, a:active {
+  color: #3F51B5;
+  text-decoration: none;
+}
+
+@media (orientation: landscape) and (min-width: 960px),
+  (orientation: portrait) and (min-width: 600px) {
+
+  a:hover, a:focus {
+    text-decoration: underline;
+  }
+
+}
+
+header {
+  display: block;
+  padding: 0px 4px;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: -0.5px;
+}
+
+button {
+  position: relative;
+  display: inline-block;
+  margin: 4px;
+  padding: 8px 12px;
+  overflow: hidden;
+  border-width: 0;
+  border-radius: 2px;
+  background-color: #3F51B5;
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+tt, code, kbd, samp {
+  font-family: 'Roboto Mono', Consolas, Monaco, 'Andale Mono', monospace;
+}
+
+.class-description {
+  font-size: 130%;
+  line-height: 140%;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.class-description:empty {
+  margin: 0;
+}
+
+article dl {
+  margin-bottom: 40px;
+}
+
+article img {
+  max-width: 100%;
+}
+
+section {
+  display: block;
+  margin-bottom: 28px;
+}
+
+pre {
+  background-color: #eeeeee;
+}
+
+.variation {
+  display: none;
+}
+
+.signature-attributes {
+  font-size: 60%;
+  color: #aaa;
+}
+
+nav ul {
+  font-family: 'Roboto', 'Open Sans', 'Halvetica', sans-serif;
+  font-size: 100%;
+  line-height: 17px;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+nav ul a, nav ul a:visited, nav ul a:active {
+  font-family: 'Roboto Mono', Consolas, Monaco, 'Andale Mono', monospace;
+  font-size: 17px;
+}
+
+nav h3 {
+  font-weight: 400;
+  font-size: 20px;
+  opacity: 0.62;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0,0,0,0.12);
+}
+
+nav li {
+  margin-top: 6px;
+}
+
+footer {
+  display: block;
+  padding: 16px;
+  font-size: 12px;
+  color: rgba(0,0,0,0.62);
+}
+
+h1, :not(paper-dialog) > h2, h3, h4 {
+  font-weight: 300;
+  margin: 0;
+  color: rgba(0,0,0,0.95);
+}
+
+h1 {
+  font-size: 48px;
+  letter-spacing: -2px;
+  margin: 12px 24px 20px;
+}
+
+:not(paper-dialog) > h2, h3.subsection-title {
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: -1px;
+  margin: 16px 0;
+}
+
+h3 {
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  margin: 32px 0 12px 0;
+}
+
+h4 {
+  font-size: 14px;
+  letter-spacing: -0.33px;
+  margin-bottom: 12px;
+  color: #4d4e53;
+}
+
+h5, .container-overview .subsection-title
+{
+  font-size: 120%;
+  font-weight: bold;
+  letter-spacing: -0.01em;
+  margin: 8px 0 3px 0;
+}
+
+h6
+{
+  font-size: 100%;
+  letter-spacing: -0.01em;
+  margin: 6px 0 3px 0;
+  font-style: italic;
+}
+
+table
+{
+  border-spacing: 0;
+  border: 0;
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+}
+
+td, th
+{
+  border: 1px solid #ddd;
+  margin: 0px;
+  text-align: left;
+  vertical-align: top;
+  padding: 4px 6px;
+  display: table-cell;
+}
+
+thead tr
+{
+  background-color: #ddd;
+  font-weight: bold;
+}
+
+th { border-right: 1px solid #aaa; }
+tr > th:last-child { border-right: 1px solid #ddd; }
+
+.ancestors, .attribs { color: #999; }
+.ancestors a, .attribs a
+{
+  color: #999 !important;
+  text-decoration: none;
+}
+
+.clear
+{
+  clear: both;
+}
+
+.important
+{
+  font-weight: bold;
+  color: #950B02;
+}
+
+.yes-def {
+  text-indent: -1000px;
+}
+
+.type-signature {
+  color: #aaa;
+}
+
+.name, .signature {
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+}
+
+.details { margin-top: 14px; border-left: 2px solid #DDD; }
+.details dt { width: 120px; float: left; padding-left: 10px;  padding-top: 6px; }
+.details dd { margin-left: 70px; }
+.details ul { margin: 0; }
+.details ul { list-style-type: none; }
+.details li { margin-left: 30px; padding-top: 6px; }
+.details pre.prettyprint { margin: 0 }
+.details .object-value { padding-top: 0; }
+
+.description {
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.code-caption
+{
+  font-style: italic;
+  font-size: 107%;
+  margin: 0;
+}
+
+.prettyprint
+{
+  border: 1px solid #ddd;
+  width: 80%;
+  overflow: auto;
+}
+
+.prettyprint.source {
+  width: inherit;
+}
+
+.prettyprint code {
+  font-size: 100%;
+  line-height: 18px;
+  display: block;
+  padding: 4px 12px;
+  margin: 0;
+  background-color: #eeeeee;
+  color: #4D4E53;
+  border-radius: 2px;
+}
+
+.prettyprint code span.line
+{
+  display: inline-block;
+}
+
+.prettyprint.linenums
+{
+  padding-left: 70px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.prettyprint.linenums ol
+{
+  padding-left: 0;
+}
+
+.prettyprint.linenums li
+{
+  border-left: 3px #ddd solid;
+}
+
+.prettyprint.linenums li.selected,
+.prettyprint.linenums li.selected *
+{
+  background-color: lightyellow;
+}
+
+.prettyprint.linenums li *
+{
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+.params .name, .props .name, .name code {
+  color: #4D4E53;
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  font-size: 100%;
+}
+
+.params td.description > p:first-child,
+.props td.description > p:first-child
+{
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.params td.description > p:last-child,
+.props td.description > p:last-child
+{
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.disabled {
+  color: #454545;
+}

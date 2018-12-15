@@ -1,0 +1,9 @@
+paper-toast.notifier > paper-button {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  height: 36px;
+  right: 24px;
+  margin: auto 0;
+  min-width: unset;
+}
