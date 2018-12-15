@@ -257,12 +257,15 @@ class Notifier {
           dialog.withBackdrop = true;
         }
 
-        dialog.addEventListener('iron-overlay-closed', e => {
+        const closedHandler = e => {
+          if (e.target !== dialog) return;
           if (e.detail.confirmed)
             resolve(options.beforeClose && options.beforeClose(e));
           else
             reject({ error: false });
-        }, { once: true });
+          dialog.removeEventListener('iron-overlay-closed', closedHandler);
+        };
+        dialog.addEventListener('iron-overlay-closed', closedHandler);
 
         dialog.classList.add('notifier');
         dialog.open();
