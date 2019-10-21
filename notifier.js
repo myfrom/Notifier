@@ -100,53 +100,12 @@ class Notifier {
     if (typeof window === 'undefined')
       throw new Error('Notifier can\'t be run in non-browser environment');
       
+    this._mobileMediaQuery = options.mobileMediaQuery || '(orientation: landscape) and (max-width: 960px),(orientation: portrait) and (max-width: 600px)';
+    
     // Add shortcut for layout
-    window.addEventListener('resize', e => {
-      this._mobile = window.matchMedia(mobileMediaQuery).matches;
-    });
-    this._mobile = window.matchMedia(mobileMediaQuery).matches;
-
-    // Define Material animation for dialogs
-    // This is a part related to neon-animation and will be removed in future
-    /** @constant */
-    this.MATERIAL_DIALOG_ANIMATION = {
-      'entry': [
-        {
-          'name': 'slide-from-bottom-animation',
-          'node': this.dialog,
-          'timing': {
-            'duration': 160,
-            'easing': 'ease-out'
-          }
-        },
-        {
-          'name': 'fade-in-animation',
-          'node': this.dialog,
-          'timing': {
-            'duration': 160,
-            'easing': 'ease-out'
-          }
-        }
-      ],
-      'exit': [
-        {
-          'name': 'slide-down-animation',
-          'node': this.dialog,
-          'timing': {
-            'duration': 160,
-            'easing': 'ease-in'
-          }
-        },
-        {
-          'name': 'fade-out-animation',
-          'node': this.dialog,
-          'timing': {
-            'duration': 160,
-            'easing': 'ease-in'
-          }
-        }
-      ]
-    }
+    this._mobileMediaQueryRef = window.matchMedia(this._mobileMediaQuery);
+    this._mobileMediaQueryRef.addListener(e => this._mobile = e.matches);
+    this._mobile = this._mobileMediaQueryRef.matches;
   }
   
   /**
