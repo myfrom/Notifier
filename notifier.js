@@ -15,7 +15,7 @@ const html = String.raw;
 if (!document) throw new Error('Notifier can\'t run without document object.');
 
 /**
- * Main class. It contains all functions and manages mdc-dialog and mdc-toast elements currently on the page.
+ * Main class. It contains all functions and manages mwc-dialog and mwc-toast elements currently on the page.
  * Using the default export, you don't have to worry about multiple instances.
  * 
  * @class
@@ -32,11 +32,11 @@ class Notifier {
     if (this._toast)
       return this._toast;
     else {
-      const toastSearchRes = document.querySelector('mdc-snackbar.notifier');
+      const toastSearchRes = document.querySelector('mwc-snackbar.notifier');
       if (toastSearchRes) {
         return this._toast = toastSearchRes;
       } else {
-        const toastEl = document.createElement('mdc-snackbar');
+        const toastEl = document.createElement('mwc-snackbar');
         document.body.appendChild(toastEl);
         return this._toast = toastEl;
       }
@@ -52,11 +52,11 @@ class Notifier {
     if (this._dialog)
       return this._dialog;
     else {
-      const dialogSearchRes = document.querySelector('mdc-dialog.notifier');
+      const dialogSearchRes = document.querySelector('mwc-dialog.notifier');
       if (dialogSearchRes) {
         return this._dialog = dialogSearchRes;
       } else {
-        const dialogEl = document.createElement('mdc-dialog');
+        const dialogEl = document.createElement('mwc-dialog');
         document.body.appendChild(dialogEl);
         return this._dialog = dialogEl;
       }
@@ -127,7 +127,7 @@ class Notifier {
       const buttonHtml = html`
         <button class="material-button" slot="action">${options.btnText}</button>
       `;
-      toast.addEventListener('MDCSnackbar:close', e => {
+      toast.addEventListener('mwcSnackbar:close', e => {
         if (e.detail.reason === 'action')
           options.btnFunction(e);
       }), { once: true };
@@ -148,19 +148,19 @@ class Notifier {
    * @param {function} [options.beforeClose] Function to be run after accepting but before removing the dialog, if set promise will resolve with it's resoluts
    * @returns {Promise} A promise that will resolve if dialog was accepted or reject with `error: false` when cancelled
    */
-  showDialog(header, content, options = {}) {
+  showDialog(header, content = '', options = {}) {
     return new Promise((resolve, reject) => {
       if (!options.attributes) options.attributes = [];
 
       const dialog = this.dialog;
-      if (dialog.opened) {
+      if (dialog.open) {
         // Check if currently open dialog is a modal
         if (dialog.escapeKeyAction === '')
           // Assume it's a modal when can't be dismissed by esc, cancel new dialog
           reject({error: new Error('Another modal open, cancelling new one.')});
         else
           // Assume not important dialog, can be closed
-          dialog.close();
+          dialog.open = false;
       }
 
       const target = options.target || document.body;
@@ -195,7 +195,7 @@ class Notifier {
       dialog.addEventListener('closed', closedHandler);
 
       dialog.classList.add('notifier');
-      dialog.open();
+      dialog.open = true;
     });
   }
 
@@ -222,8 +222,8 @@ class Notifier {
       <div>
         ${innerMsg}
       </div>
-      <button class="material-button" dialog-action="ok" slot="primaryAction" dialog-initial-focus>${acceptText}</button>
-      <button class="material-button" dialog-action="cancel" slot="secondaryAction">${cancelText}</button>
+      <button class="material-button" dialogAction="ok" slot="primaryAction" dialogInitialFocus>${acceptText}</button>
+      <button class="material-button" dialogAction="cancel" slot="secondaryAction">${cancelText}</button>
     `;
     options.formatted = true;
     return this.showDialog(msg, content, options);
