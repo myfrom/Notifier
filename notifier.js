@@ -124,12 +124,12 @@ class Notifier {
     toast.duration = typeof options.duration === 'number' ? options.duration : 5000;
 
     if (options.btnText && options.btnFunction) {
-      const buttonHtml = html`
+      toast.innerHTML = html`
         <button class="material-button" slot="action">${options.btnText}</button>
       `;
-      toast.addEventListener('mwcSnackbar:close', e => {
+      toast.addEventListener('MDCSnackbar:closed', e => {
         if (e.detail.reason === 'action')
-          options.btnFunction(e);
+          options.btnFunction.call(e);
       }), { once: true };
     }
 
