@@ -15,14 +15,8 @@
     
     <link rel="stylesheet" href="docs-styles.css">
 
-    <!-- WebAnimations polyfill for paper-dialog -->
-    <script src="https://unpkg.com/web-animations-js/web-animations-next-lite.min.js"></script>
-
-    <style>
-      #formatted-dialog .first {
-        margin-right: auto;
-      }
-    </style>
+    
+    <link rel="stylesheet" href="../styles.css">
 
     <script>
 
@@ -78,16 +72,14 @@ btnBasicDialog.addEventListener('click', () =>
     <pre class="prettyprint source lang-js"><code>
 btnFormattedDialog.addEventListener('click', () =>
   Notifier.showDialog('I\'m so well formatted', `
-    &lt;paper-dialog-scrollable&gt;
+    &lt;div&gt;
       Such a nice content here.
       &lt;hr noshadow&gt;
       And there's even our banner!
       &lt;img src="banner.png"&gt;
-    &lt;/paper-dialog-scrollable&gt;
-    &lt;div class="buttons"&gt;
-      &lt;paper-button class="first"&gt;First, lol&lt;/paper-button&gt;
-      &lt;paper-button dialog-dismiss&gt;Meh&lt;/paper-button&gt;
-      &lt;paper-button autofocus dialog-confirm&gt;I'm amazed&lt;/paper-button&gt;
+    &lt;/div&gt;
+    &lt;button slot="secondaryAction" class="material-button first"&gt;First, lol&lt;/button&gt;
+    &lt;button slot="primaryAction" class="material-button" dialogAction="close"&gt;I'm amazed&lt;/button&gt;
     &lt;/div&gt;
   `, {
     attributes: {
@@ -142,16 +134,14 @@ btnQuestionDialog.addEventListener('click', () =>
 
     btnFormattedDialog.addEventListener('click', () =>
       Notifier.showDialog('I\'m so well formatted', `
-        <paper-dialog-scrollable>
+        <div>
           Such a nice content here.
           <hr noshadow>
           And there's even our banner!
           <img src="banner.png">
-        </paper-dialog-scrollable>
-        <div class="buttons">
-          <paper-button class="first">First, lol</paper-button>
-          <paper-button dialog-dismiss>Meh</paper-button>
-          <paper-button autofocus dialog-confirm>I'm amazed</paper-button>
+        </div>
+        <button slot="secondaryAction" class="material-button first">First, lol</button>
+        <button slot="primaryAction" class="material-button" dialogAction="close">I'm amazed</button>
         </div>
       `, {
         attributes: {

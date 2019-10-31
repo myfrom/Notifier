@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
-    "build-docs": "npm run cleanup && jsdoc notifier.js -c jsdoc.json && ./node_modules/.bin/webpack",
+    "build-docs": "npm run cleanup && jsdoc notifier.js -c jsdoc.json && rollup -c rollup.config.js",
     "cleanup": "rm -rf ./docs"
   },
   "repository": {
@@ -31,7 +31,9 @@
   },
   "homepage": "https://github.com/myfrom/Notifier",
   "devDependencies": {
-    "jsdoc": "^3.6.3"
+    "jsdoc": "^3.6.3",
+    "rollup": "^1.26.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {
     "@material/mwc-dialog": "^0.10.0",
