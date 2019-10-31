@@ -1,9 +1,56 @@
-paper-toast.notifier > paper-button {
-  position: absolute;
-  top: 6px;
-  bottom: 6px;
+mwc-snackbar.notifier > .material-button,
+mwc-dialog.notifier > .material-button {
+  background: none;
+  color: var(--mdc-theme-primary,var(--primary-color, #6200ee));
+  border: none;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
   height: 36px;
-  right: 24px;
-  margin: auto 0;
-  min-width: unset;
+  letter-spacing: 1.25px;
+  padding: 0 8px;
+  margin: 0 8px;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+}
+
+mwc-snackbar.notifier > .material-button {
+  color: var(--mdc-theme-primary,var(--primary-color, #d2b0ff));
+}
+
+mwc-snackbar.notifier > .material-button:focus,
+mwc-dialog.notifier > .material-button:focus {
+  outline: none;
+}
+
+mwc-snackbar.notifier > .material-button::before,
+mwc-dialog.notifier > .material-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: black;
+  opacity: 0;
+  transition: opacity 160ms ease-in-out;
+}
+
+mwc-snackbar.notifier > .material-button:focus::before,
+mwc-dialog.notifier > .material-button:focus::before,
+mwc-snackbar.notifier > .material-button:hover::before,
+mwc-dialog.notifier > .material-button:hover::before {
+  opacity: 0.12;
+}
+
+mwc-snackbar.notifier > .material-button:active::before,
+mwc-dialog.notifier > .material-button:active::before {
+  opacity: 0.2;
 }

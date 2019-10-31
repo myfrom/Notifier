@@ -8,17 +8,7 @@
 
 if (!document) throw new Error('Notifier can\'t run without document object.');
 
-const styleContent = `
-  paper-toast.notifier > paper-button {
-    position: absolute;
-    top: 6px;
-    bottom: 6px;
-    height: 36px;
-    right: 24px;
-    margin: auto 0;
-    min-width: unset;
-  }
-`;
-const styleEl = document.createElement('style');
-styleEl.innerHTML = styleContent;
-document.head.appendChild(styleEl);
+const el = document.createElement('link');
+el.setAttribute('rel', 'stylesheet');
+el.setAttribute('href', '/node_modules/@myfrom/notifier/styles.css');
+document.head.appendChild(el);
