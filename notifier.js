@@ -170,8 +170,10 @@ class Notifier {
         dialog.title = header;
       else
         dialog.removeAttribute('title');
-     
-      dialog.innerHTML = (options.formatted ? content : html`<div>${content}</div>`);;
+      
+      dialog.innerHTML = (options.formatted ? content : html`<div>${content}</div>`);
+      // If isn't formatted there are no action buttons
+      dialog.hideActions = !options.formatted;
 
       for (let i = 0; i < dialog.attributes.length; i++) {
         const attrName = dialog.attributes[i].name;
