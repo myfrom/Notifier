@@ -94,7 +94,7 @@ header {
   letter-spacing: -0.5px;
 }
 
-button {
+button:not(.material-button) {
   position: relative;
   display: inline-block;
   margin: 4px;
