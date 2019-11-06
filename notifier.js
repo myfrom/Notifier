@@ -166,10 +166,7 @@ class Notifier {
       const target = options.target || document.body;
       if (dialog.parentElement !== target) target.appendChild(dialog);
 
-      if (header)
-        dialog.title = header;
-      else
-        dialog.removeAttribute('title');
+      dialog.title = header || null;
       
       dialog.innerHTML = (options.formatted ? content : html`<div>${content}</div>`);
       // If isn't formatted there are no action buttons
